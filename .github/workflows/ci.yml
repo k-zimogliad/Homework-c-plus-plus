@@ -1,0 +1,52 @@
+name: CI - Build and Test RPN Calculator
+
+on:
+  push:
+    branches: [ "ci_test", "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ make
+    
+    - name: Build project
+      run: make
+    
+    - name: Run quick test
+      run: |
+        echo "=== Running quick test ==="
+        make quick_test
+        echo "=== Test completed ==="
+    
+    - name: Validate output
+      run: |
+        echo "=== Validating results ==="
+        if [ ! -f output.txt ]; then
+          echo "❌ ERROR: output.txt not created"
+          exit 1
+        fi
+        
+        # Проверяем что в output.txt есть ожидаемые результаты
+        EXPECTED_LINES=6
+        ACTUAL_LINES=$(wc -l < output.txt)
+        
+        if [ "$ACTUAL_LINES" -ne "$EXPECTED_LINES" ]; then
+          echo "❌ ERROR: Expected $EXPECTED_LINES lines, got $ACTUAL_LINES"
+          echo "Contents of output.txt:"
+          cat output.txt
+          exit 1
+        fi
+        
+        echo "✅ Output file created with $ACTUAL_LINES lines"
+        echo "Contents:"
+        cat output.txt
