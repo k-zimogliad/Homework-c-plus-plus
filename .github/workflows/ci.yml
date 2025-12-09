@@ -1,0 +1,43 @@
+on:
+  push:
+    branches: [ "ci_test" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ make
+    
+    - name: Build project
+      run: make build
+    
+    - name: Test project
+      run: |
+        # Создаем тестовый input.txt
+        echo "3 2 - 1 +" > input.txt
+        echo "2 12 6 / -" >> input.txt
+        echo "5 1 2 + 4 * + 3 -" >> input.txt
+        echo "10 2 * 5 +" >> input.txt
+        
+        # Запускаем программу
+        make run
+        
+        # Проверяем результат
+        echo "=== Проверка output.txt ==="
+        cat output.txt
+        
+        # Простая проверка
+        if grep -q "3 2 - 1 + = 2" output.txt && grep -q "2 12 6 / - = 0" output.txt; then
+          echo "✅ Тест пройден успешно!"
+        else
+          echo "❌ Тест не пройден"
+          exit 1
