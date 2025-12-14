@@ -1,4 +1,4 @@
-name: Build SparseVector
+name: Build with Makefile
 
 on: [push, pull_request]
 
@@ -10,13 +10,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y g++
-
-      - name: Compile with Makefile
+      - name: Build project
         run: make
 
-      - name: Run (optional sanity check)
-        run: ./test || true
+      - name: Cleanup (optional)
+        run: make clean
