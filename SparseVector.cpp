@@ -244,4 +244,9 @@ bool SparseVector::operator==(const SparseVector& sv) const {
 
 bool SparseVector::operator!=(const SparseVector& sv) const {
     return !(*this == sv);
+    
+    int main() {
+      return 0;
+    }
+}
 }
