@@ -1,3 +1,5 @@
+#include "SparseVector.h"
+
 // Освобождает память всех узлов
 void SparseVector::clear() {
     while (head_ != nullptr) {
