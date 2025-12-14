@@ -6,6 +6,15 @@
 *.lo
 *.o
 *.obj
+*.o
+*.exe
+*.out
+a.out
+test
+
+# Build folders
+build/
+cmake-build-debug/
 
 # Precompiled Headers
 *.gch
