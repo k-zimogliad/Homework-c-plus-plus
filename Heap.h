@@ -4,11 +4,11 @@
 #include <stdexcept> 
 #include <cassert>
 
-template<typename T, int size>
+template<typename T, int N> // Изменено: 'size' -> 'N'
 class Heap {
 private:
-    T data[size]; // массив для хранения элементов кучи
-    int count;    // текущее количество элементов
+    T data[N]; // массив для хранения элементов кучи
+    int count; // текущее количество элементов
 
     // Вспомогательные функции для навигации по массиву
     int parent(int idx) const { return (idx - 1) / 2; }
@@ -51,7 +51,7 @@ public:
 
     // Добавить элемент
     void push(const T& value) {
-        if (count >= size) {
+        if (count >= N) { // Изменено: 'size' -> 'N'
             throw std::overflow_error("Куча заполнена!");
         }
         data[count] = value;
@@ -89,8 +89,8 @@ public:
     }
 
     // Получить максимальную вместимость
-    static int capacity() {
-        return size;
+    static constexpr int capacity() {
+        return N; // Изменено: 'size' -> 'N'
     }
 };
 
