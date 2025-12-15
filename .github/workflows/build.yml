@@ -1,0 +1,20 @@
+name: Build Heap
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build project
+        run: make
+
+      - name: Run tests
+        run: ./test
+
+      - name: Cleanup
+        run: make clean
