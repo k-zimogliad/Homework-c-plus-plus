@@ -1,4 +1,4 @@
-name: Build with Makefile
+name: Test SparseVector
 
 on: [push, pull_request]
 
@@ -10,8 +10,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build project
-        run: make
+      - name: Install Google Test
+        run: |
+          sudo apt update
+          sudo apt install -y libgtest-dev cmake
+          cd /usr/src/gtest
+          sudo cmake CMakeLists.txt
+          sudo make
+          sudo cp libgtest*.a /usr/lib
 
-      - name: Cleanup (optional)
+      - name: Build and run tests
+        run: |
+          make
+          make run
+
+      - name: Cleanup
         run: make clean

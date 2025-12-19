@@ -1,12 +1,14 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -pedantic
+GTEST_LIB = -lgtest -lgtest_main -lpthread
 
-all: test
+test: test.cpp SparseVector.cpp
+	$(CXX) $(CXXFLAGS) -o test test.cpp SparseVector.cpp $(GTEST_LIB)
 
-test: SparseVector.cpp
-	$(CXX) $(CXXFLAGS) -o test SparseVector.cpp
+run: test
+	./test
 
 clean:
 	rm -f test
 
-.PHONY: all clean
+.PHONY: run clean
