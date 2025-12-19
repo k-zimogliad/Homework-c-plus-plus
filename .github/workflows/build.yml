@@ -1,0 +1,29 @@
+name: Test Heap
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Google Test and dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libgtest-dev cmake pkg-config
+
+          sudo mkdir -p /usr/local/lib
+          sudo ln -sf /usr/lib/x86_64-linux-gnu/libgtest.so /usr/local/lib/libgtest.so
+          sudo ln -sf /usr/lib/x86_64-linux-gnu/libgtest_main.so /usr/local/lib/libgtest_main.so
+
+      - name: Build tests
+        run: make
+
+      - name: Run tests
+        run: make run
+
+      - name: Cleanup
+        run: make clean
