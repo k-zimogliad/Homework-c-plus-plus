@@ -10,19 +10,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Google Test
+      - name: Install Google Test and dependencies
         run: |
           sudo apt update
-          sudo apt install -y libgtest-dev cmake
-          cd /usr/src/gtest
-          sudo cmake CMakeLists.txt
-          sudo make
-          sudo cp libgtest*.a /usr/lib
+          sudo apt install -y libgtest-dev cmake pkg-config
 
-      - name: Build and run tests
-        run: |
-          make
-          make run
+          sudo mkdir -p /usr/local/lib
+          sudo ln -s /usr/lib/x86_64-linux-gnu/libgtest.so /usr/local/lib/libgtest.so
+          sudo ln -s /usr/lib/x86_64-linux-gnu/libgtest_main.so /usr/local/lib/libgtest_main.so
+
+      - name: Build tests
+        run: make
+
+      - name: Run tests
+        run: make run
 
       - name: Cleanup
         run: make clean
